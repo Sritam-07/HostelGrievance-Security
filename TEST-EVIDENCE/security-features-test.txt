@@ -1,0 +1,91 @@
+╔══════════════════════════════════════════════════════════════╗
+║           SECURITY FEATURES TEST RESULTS                    ║
+╚══════════════════════════════════════════════════════════════╝
+
+Date: Fri Aug 28 17:00:13 IST 2026
+Tester: Security Engineering Team
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST 1: Rate Limiting (10 attempts/15min per IP)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Result: ✅ PASSED
+  - First 10 attempts: HTTP 401 (Invalid credentials)
+  - Attempt 11+: HTTP 429 (Too many requests)
+  - Returns Retry-After header
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST 2: Session Validation
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Result: ✅ PASSED
+  - Valid session → HTTP 200 with user data
+  - Invalid token → HTTP 401 (Authentication required)
+  - No session → HTTP 401 (Authentication required)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST 3: Logout Destroys Session Server-Side
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Result: ✅ PASSED
+  - Before logout: Session valid (HTTP 200)
+  - After logout: Session invalid (HTTP 401)
+  - Token deleted from database
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST 4: IDOR Prevention
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Result: ✅ PASSED
+  - Student A accessing Student B's grievance → HTTP 403
+  - Error: 'You cannot access this grievance.'
+  - Wardens can access all (role-based)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST 5: Role Enforcement
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Result: ✅ PASSED
+  - Student trying to change status → HTTP 403
+  - Error: 'Students cannot change grievance status.'
+  - Wardens can change status
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST 6: Security Headers
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Result: ✅ PASSED
+  - X-Content-Type-Options: nosniff
+  - X-Frame-Options: DENY
+  - X-XSS-Protection: 0
+  - Referrer-Policy: strict-origin-when-cross-origin
+  - Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST 7: Error Handling (No Internal Leaks)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Result: ✅ PASSED
+  - Unknown grievance: HTTP 404 with generic message
+  - No file paths, SQL errors, or stack traces exposed
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST 8: Password Hashing (PBKDF2)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Result: ✅ PASSED
+  - Hash format: pbkdf2:600000:<salt>:<hash>
+  - 600,000 iterations (OWASP 2024 recommendation)
+  - Random 16-byte salt per password
+  - Legacy SHA256 still supported for migration
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST 9: Session Cookie Flags
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Result: ✅ PASSED
+  - httpOnly: true (prevents XSS theft)
+  - secure: true (HTTPS only)
+  - sameSite: 'Lax' (CSRF protection)
+  - maxAge: 604800 (7 days)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEST 10: CORS Configuration
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Result: ✅ PASSED
+  - Allowed: localhost:5173, localhost:5174
+  - Blocked: Any other origin
+  - Credentials: Supported for allowed origins
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

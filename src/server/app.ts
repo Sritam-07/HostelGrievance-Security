@@ -6,6 +6,9 @@ import { authRoutes } from './routes/auth.ts';
 import { grievanceRoutes } from './routes/grievances.ts';
 import { attachmentRoutes } from './routes/attachments.ts';
 import { cors } from 'hono/cors';
+import { bodyLimit } from 'hono/body-limit';
+
+const MAX_BODY_BYTES = 5 * 1024 * 1024; // 5MB (2MB file + metadata overhead)
 
 const ALLOWED_ORIGINS = new Set([
 	'http://localhost:5173',
@@ -23,6 +26,14 @@ export function createApp(options: CreateAppOptions) {
 	const app = new Hono<AppEnv>();
 
 	// Security headers middleware
+	// Request body size limit to prevent memory exhaustion
+	app.use('/api/*', bodyLimit({
+		maxSize: MAX_BODY_BYTES,
+		onError: (c) => {
+			return c.json({ error: 'Request body too large.', code: 'bad_request' }, 413);
+		}
+	}));
+
 	app.use('*', async (c, next) => {
 		c.header('X-Content-Type-Options', 'nosniff');
 		c.header('X-Frame-Options', 'DENY');

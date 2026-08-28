@@ -27,9 +27,15 @@ attachmentRoutes.get('/:id', (c) => {
 	const bytes = readStoredFile(c.get('uploadsDir'), row.stored_filename);
 	c.header('Content-Type', row.mime_type);
 	c.header('Content-Length', String(bytes.length));
+	// Sanitize filename for Content-Disposition header
+	const safeFilename = row.original_filename
+		.replaceAll('"', '')
+		.replaceAll('\r', '')
+		.replaceAll('\n', '')
+		.replaceAll('\0', '');
 	c.header(
 		'Content-Disposition',
-		`inline; filename="${row.original_filename.replaceAll('"', '')}"`
+		`inline; filename="${safeFilename}"`
 	);
 	return c.body(new Uint8Array(bytes));
 });

@@ -1,4 +1,4 @@
-import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
+import { createHash, pbkdf2Sync, randomBytes, timingSafeEqual } from 'node:crypto';
 
 /**
  * Password hashing with configurable algorithm.
@@ -12,10 +12,6 @@ const DIGEST = 'sha256';
 
 export function hashPassword(password: string): string {
 	const salt = randomBytes(16).toString('hex');
-	const derived = createHash('sha256');
-	// Use Node's pbkdf2Sync for simplicity in a lab environment
-	// In production, use crypto.pbkdf2 (async)
-	const { pbkdf2Sync } = require('node:crypto') as typeof import('node:crypto');
 	const hash = pbkdf2Sync(password, salt, ITERATIONS, KEY_LENGTH, DIGEST).toString('hex');
 	return `${SCHEME}:${ITERATIONS}:${salt}:${hash}`;
 }
@@ -34,7 +30,6 @@ export function verifyPassword(password: string, stored: string): boolean {
 	const iterations = Number.parseInt(iterationsStr, 10);
 	if (Number.isNaN(iterations) || iterations < 100_000) return false;
 
-	const { pbkdf2Sync } = require('node:crypto') as typeof import('node:crypto');
 	const actual = pbkdf2Sync(password, salt, iterations, KEY_LENGTH, DIGEST);
 	const expected = Buffer.from(expectedHash, 'hex');
 	if (actual.length !== expected.length) return false;

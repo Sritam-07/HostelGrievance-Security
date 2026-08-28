@@ -50,8 +50,44 @@ export function assertPermittedAttachment(mime: string, size: number): void {
 
 export async function bufferFromUpload(file: File): Promise<Buffer> {
 	const bytes = Buffer.from(await file.arrayBuffer());
-	assertPermittedAttachment(file.type, bytes.byteLength);
+	// Validate MIME type from actual file contents (magic bytes), not client-provided type
+	const detectedMime = detectMimeFromBytes(bytes);
+	assertPermittedAttachment(detectedMime, bytes.byteLength);
 	return bytes;
+}
+
+/**
+ * Detect MIME type from file magic bytes.
+ * This prevents clients from lying about file types.
+ */
+function detectMimeFromBytes(bytes: Buffer): string {
+	if (bytes.length < 4) return 'application/octet-stream';
+
+	// JPEG: FF D8 FF
+	if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) {
+		return 'image/jpeg';
+	}
+
+	// PNG: 89 50 4E 47
+	if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47) {
+		return 'image/png';
+	}
+
+	// GIF: 47 49 46 38
+	if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38) {
+		return 'image/gif';
+	}
+
+	// WebP: RIFF....WEBP
+	if (
+		bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 &&
+		bytes.length >= 12 &&
+		bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50
+	) {
+		return 'image/webp';
+	}
+
+	return 'application/octet-stream';
 }
 
 export function writeStoredFile(uploadsDir: string, storedName: string, bytes: Buffer): void {

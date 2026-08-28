@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import type { AppEnv } from '../env.ts';
-import { createSession, clearSessionCookie, destroySession, requireUser, setSessionCookie } from '../auth/session.ts';
+import { createSession, clearSessionCookie, destroySession, readSessionUser, requireUser, setSessionCookie } from '../auth/session.ts';
 import { getCookie } from 'hono/cookie';
 import { SESSION_COOKIE } from '../config.ts';
 import { verifyPassword } from '../auth/passwords.ts';
@@ -57,7 +57,12 @@ authRoutes.post('/logout', (c) => {
 	const db = c.get('db');
 	const token = getCookie(c, SESSION_COOKIE);
 	if (token) {
+		// Get user info before destroying session for audit log
+		const user = readSessionUser(db, token);
 		destroySession(db, token);
+		if (user) {
+			logSecurityEvent('logout', { userId: user.id, email: user.email });
+		}
 	}
 	clearSessionCookie(c);
 	return c.json({ ok: true });

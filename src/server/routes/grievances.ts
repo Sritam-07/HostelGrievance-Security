@@ -153,6 +153,9 @@ grievanceRoutes.post('/:id/comments', async (c) => {
 	if (!text) {
 		throw new HttpError(400, 'bad_request', 'Comment cannot be empty.');
 	}
+	if (text.length > 5000) {
+		throw new HttpError(400, 'bad_request', 'Comment must be 5000 characters or fewer.');
+	}
 
 	const id = nextCommentId(db);
 	const ts = nowIso();

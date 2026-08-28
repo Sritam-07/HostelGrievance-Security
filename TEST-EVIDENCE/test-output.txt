@@ -1,0 +1,83 @@
+
+> hostelgrievance@0.0.1 test
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90mC:/Users/dsrit/Documents/Learnathon 2026[39m
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mlogin works for dummy student and warden accounts
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:28.553Z","event":"login_success","details":{"userId":"stu-1","email":"student@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mlogin works for dummy student and warden accounts
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:28.642Z","event":"login_success","details":{"userId":"war-1","email":"warden@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mrejects invalid credentials
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:28.955Z","event":"login_failed","details":{"email":"student@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mcurrent-user works after login and fails after logout
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:29.281Z","event":"login_success","details":{"userId":"stu-1","email":"student@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mstudent can create a grievance
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:29.627Z","event":"login_success","details":{"userId":"stu-1","email":"student@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mstudent can retrieve a permitted grievance
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:29.970Z","event":"login_success","details":{"userId":"stu-1","email":"student@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mstudent cannot access another student’s grievance
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:30.296Z","event":"login_success","details":{"userId":"stu-1","email":"student@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mwarden can access management functionality
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:30.619Z","event":"login_success","details":{"userId":"war-1","email":"warden@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mcomments work for permitted users
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:30.939Z","event":"login_success","details":{"userId":"stu-1","email":"student@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mstatus changes work for wardens and are forbidden for students
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:31.256Z","event":"login_success","details":{"userId":"stu-1","email":"student@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mstatus changes work for wardens and are forbidden for students
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:31.342Z","event":"login_success","details":{"userId":"war-1","email":"warden@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mattachment metadata and storage work
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:31.651Z","event":"login_success","details":{"userId":"stu-1","email":"student@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mattachment metadata and storage work
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:31.662Z","event":"file_download","details":{"userId":"stu-1","attachmentId":"att-5","grievanceId":"GRV-0009"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mattachment metadata and storage work
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:31.748Z","event":"login_success","details":{"userId":"stu-2","email":"priya@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mrejects oversized and disallowed attachments
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:32.061Z","event":"login_success","details":{"userId":"stu-1","email":"student@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mlets a student edit their own open grievance but not a resolved one
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:32.376Z","event":"login_success","details":{"userId":"stu-1","email":"student@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mlets a student edit their own open grievance but not a resolved one
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:32.463Z","event":"login_success","details":{"userId":"stu-2","email":"priya@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mlets a student edit their own open grievance but not a resolved one
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:32.550Z","event":"login_success","details":{"userId":"stu-3","email":"rohan@example.test","ip":"unknown"}}
+
+[90mstdout[2m | src/server/app.test.ts[2m > [22m[2mHostelGrievance API baseline[2m > [22m[2mreturns 404 for unknown grievance ids without leaking internals
+[22m[39m[SECURITY] {"timestamp":"2026-08-28T10:42:33.088Z","event":"login_success","details":{"userId":"war-1","email":"warden@example.test","ip":"unknown"}}
+
+ [32m✓[39m src/server/app.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 4924[2mms[22m[39m
+     [33m[2m✓[22m[39m login works for dummy student and warden accounts [33m 478[2mms[22m[39m
+     [33m[2m✓[22m[39m rejects invalid credentials [33m 321[2mms[22m[39m
+     [33m[2m✓[22m[39m current-user works after login and fails after logout [33m 329[2mms[22m[39m
+     [33m[2m✓[22m[39m student can create a grievance [33m 342[2mms[22m[39m
+     [33m[2m✓[22m[39m student can retrieve a permitted grievance [33m 345[2mms[22m[39m
+     [33m[2m✓[22m[39m student cannot access another student’s grievance [33m 307[2mms[22m[39m
+     [33m[2m✓[22m[39m warden can access management functionality [33m 339[2mms[22m[39m
+     [33m[2m✓[22m[39m status changes work for wardens and are forbidden for students [33m 411[2mms[22m[39m
+     [33m[2m✓[22m[39m attachment metadata and storage work [33m 406[2mms[22m[39m
+     [33m[2m✓[22m[39m rejects oversized and disallowed attachments [33m 317[2mms[22m[39m
+     [33m[2m✓[22m[39m lets a student edit their own open grievance but not a resolved one [33m 498[2mms[22m[39m
+     [33m[2m✓[22m[39m returns 404 for unknown grievance ids without leaking internals [33m 315[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m14 passed[39m[22m[90m (14)[39m
+[2m   Start at [22m 16:12:27
+[2m   Duration [22m 5.62s[2m (transform 181ms, setup 0ms, import 476ms, tests 4.92s, environment 0ms)[22m
+

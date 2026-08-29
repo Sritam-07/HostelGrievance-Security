@@ -9,17 +9,16 @@
 
 ```bash
 # 1. Open terminal in project folder
-cd hostelgrievance-security-hardening
+cd HostelGrievance-Security
 
-# 2. Install dependencies
+# 2. Install dependencies (automatically creates database)
 npm install
 
-# 3. Reset database with sample data
-npm run db:reset
-
-# 4. Start the application
+# 3. Start the application
 npm run dev:all
 ```
+
+> **Note:** `npm install` now automatically creates the database with sample data via the `postinstall` script.
 
 ## Access the Application
 

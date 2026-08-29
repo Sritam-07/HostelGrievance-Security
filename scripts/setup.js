@@ -29,47 +29,21 @@ function run(cmd, options = {}) {
     }
 }
 
-// Step 1: Try normal install
-console.log('📦 Step 1: Installing dependencies...');
+// Step 1: Check if dependencies are installed
 console.log('');
+console.log('📦 Step 1: Checking dependencies...');
 
-const installResult = run('npm install');
-
-if (!installResult || !existsSync(join(ROOT, 'node_modules', 'better-sqlite3'))) {
-    console.log('');
-    console.log('⚠️  Native compilation failed. Trying fallback...');
-    console.log('');
-    
-    // Step 2: Try with pre-built binaries
-    console.log('📦 Step 2: Installing with pre-built binaries...');
-    run('npm install --ignore-scripts');
-    
-    // Step 3: Try to rebuild better-sqlite3 specifically
-    console.log('');
-    console.log('🔨 Step 3: Attempting to rebuild better-sqlite3...');
-    const rebuildResult = run('npm rebuild better-sqlite3');
-    
-    if (!rebuildResult || !existsSync(join(ROOT, 'node_modules', 'better-sqlite3', 'build', 'Release', 'better_sqlite3.node'))) {
-        console.log('');
-        console.log('╔═══════════════════════════════════════════════════════════╗');
-        console.log('║  ⚠️  better-sqlite3 needs C++ build tools                ║');
-        console.log('╠═══════════════════════════════════════════════════════════╣');
-        console.log('║                                                         ║');
-        console.log('║  The app will still work! We use a pre-built binary.   ║');
-        console.log('║                                                         ║');
-        console.log('║  To fix this permanently, install:                      ║');
-        console.log('║  - Windows: Visual Studio Build Tools                   ║');
-        console.log('║  - Mac: Xcode Command Line Tools                        ║');
-        console.log('║  - Linux: build-essential                                ║');
-        console.log('║                                                         ║');
-        console.log('╚═══════════════════════════════════════════════════════════╝');
-        console.log('');
-    }
+if (!existsSync(join(ROOT, 'node_modules', 'better-sqlite3'))) {
+    console.log('⚠️  better-sqlite3 not found. Run: npm install --ignore-scripts');
+    console.log('   Then run: npm run setup');
+    process.exit(1);
 }
 
-// Step 4: Create database
+console.log('✅ Dependencies found.');
+
+// Step 2: Create database
 console.log('');
-console.log('🗄️  Step 4: Creating database with sample data...');
+console.log('🗄️  Step 2: Creating database with sample data...');
 run('npx tsx src/server/scripts/reset-db.ts');
 
 console.log('');

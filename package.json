@@ -17,8 +17,7 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"setup": "node scripts/setup.js",
-		"postinstall": "node scripts/setup.js"
+		"setup": "node scripts/setup.js"
 	},
 	"devDependencies": {
 		"@internationalized/date": "^3.12.3",

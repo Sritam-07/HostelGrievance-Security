@@ -1,11 +1,37 @@
-# HostelGrievance
+# HostelGrievance Security Hardening
 
-University hostel grievance portal — Svelte 5 UI plus a small local Hono + SQLite API. Built as a security-lab baseline, not a production platform.
+🛡️ University hostel grievance portal with comprehensive security hardening.
 
-## Install
+**Tech Stack:** Svelte 5 + Hono API + SQLite
 
-```sh
+**Security Features:** PBKDF2 hashing, IDOR prevention, rate limiting, security headers, audit logging, RBAC
+
+## 🚀 Quick Start (3 commands)
+
+```bash
+# 1. Install dependencies + create database automatically
 npm install
+
+# 2. Start the app
+npm run dev:all
+
+# 3. Open browser: http://localhost:5173
+```
+
+> **Note:** `npm install` automatically sets up the database with sample data.
+
+## ⚠️ If installation fails
+
+If you see errors about `better-sqlite3` or C++ build tools:
+
+```bash
+# Option 1: Run setup manually
+npm run setup
+
+# Option 2: Ignore scripts and setup manually
+npm install --ignore-scripts
+npm run db:reset
+npm run dev:all
 ```
 
 ## Database
